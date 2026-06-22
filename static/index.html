@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Listing Copilot — AI listing copy for handmade sellers</title>
+<style>
+  :root {
+    --bg: #fdfbf7;
+    --ink: #2b2420;
+    --accent: #b5651d;
+    --accent-light: #f1e3d3;
+    --card: #ffffff;
+    --border: #e8ddd0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+  }
+  header {
+    padding: 28px 24px 12px;
+    text-align: center;
+  }
+  header h1 { margin: 0 0 6px; font-size: 28px; }
+  header p { margin: 0; color: #6b6258; }
+  main {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 24px;
+    display: grid;
+    gap: 24px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .tab {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--accent-light);
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 14px 0 4px; }
+  input, select, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  textarea { min-height: 70px; resize: vertical; }
+  button {
+    margin-top: 18px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button:disabled { opacity: 0.6; cursor: wait; }
+  .result { margin-top: 20px; display: none; }
+  .result h3 { margin: 18px 0 6px; font-size: 14px; text-transform: uppercase; color: var(--accent); letter-spacing: 0.04em; }
+  .result pre, .result .box {
+    background: var(--accent-light);
+    padding: 12px 14px;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    font-family: inherit;
+    font-size: 14px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tags span { background: var(--accent-light); padding: 4px 10px; border-radius: 999px; font-size: 12px; }
+  .hint { font-size: 12px; color: #8a8074; margin-top: 6px; }
+  .error { color: #b53d1d; font-size: 14px; margin-top: 12px; }
+  .bulk-row { display: flex; align-items: center; gap: 12px; }
+  a.download { color: var(--accent); font-weight: 600; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🛍️ Listing Copilot</h1>
+  <p>Turn product details into SEO-optimized, human-sounding listings — in seconds.</p>
+</header>
+
+<main>
+  <div class="card">
+    <div class="tabs">
+      <div class="tab active" data-tab="single">Single listing</div>
+      <div class="tab" data-tab="bulk">Bulk upload (CSV)</div>
+    </div>
+
+    <!-- SINGLE LISTING -->
+    <div id="single-panel">
+      <label>Platform</label>
+      <select id="platform">
+        <option value="etsy">Etsy</option>
+        <option value="shopify">Shopify</option>
+        <option value="amazon">Amazon</option>
+      </select>
+
+      <label>Product name</label>
+      <input id="product_name" placeholder="e.g. Hand-poured lavender soy candle" />
+
+      <label>Category</label>
+      <input id="category" placeholder="e.g. Home & Living > Candles" />
+
+      <label>Materials / ingredients</label>
+      <textarea id="materials" placeholder="e.g. soy wax, cotton wick, lavender essential oil, amber glass jar"></textarea>
+
+      <label>Key features / what makes it special</label>
+      <textarea id="features" placeholder="e.g. 45-hour burn time, hand-poured in small batches, reusable jar"></textarea>
+
+      <label>Target buyer</label>
+      <input id="audience" placeholder="e.g. gift shoppers, self-care enthusiasts" />
+
+      <label>Brand voice / tone</label>
+      <input id="tone" placeholder="e.g. warm, cozy, a little whimsical" />
+
+      <label>Price (optional)</label>
+      <input id="price" placeholder="e.g. $24" />
+
+      <button id="generate-btn">Generate listing</button>
+      <div class="error" id="single-error"></div>
+
+      <div class="result" id="single-result">
+        <h3>Title</h3>
+        <div class="box" id="r-title"></div>
+        <h3>Tags</h3>
+        <div class="tags" id="r-tags"></div>
+        <h3>Description</h3>
+        <div class="box" id="r-description"></div>
+        <h3>Pinterest description</h3>
+        <div class="box" id="r-pinterest"></div>
+        <h3>Instagram caption</h3>
+        <div class="box" id="r-instagram"></div>
+      </div>
+    </div>
+
+    <!-- BULK -->
+    <div id="bulk-panel" style="display:none;">
+      <p class="hint">Upload a CSV with columns: <code>platform, product_name, category, materials, features, audience, tone, price</code></p>
+      <div class="bulk-row">
+        <input type="file" id="csv-file" accept=".csv" />
+        <button id="bulk-btn" style="margin-top:0;">Process CSV</button>
+      </div>
+      <div class="error" id="bulk-error"></div>
+      <div id="bulk-result" style="margin-top:16px;"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    const isSingle = tab.dataset.tab === "single";
+    document.getElementById("single-panel").style.display = isSingle ? "block" : "none";
+    document.getElementById("bulk-panel").style.display = isSingle ? "none" : "block";
+  });
+});
+
+document.getElementById("generate-btn").addEventListener("click", async () => {
+  const btn = document.getElementById("generate-btn");
+  const errorEl = document.getElementById("single-error");
+  const resultEl = document.getElementById("single-result");
+  errorEl.textContent = "";
+  resultEl.style.display = "none";
+  btn.disabled = true;
+  btn.textContent = "Generating...";
+
+  const payload = {
+    platform: document.getElementById("platform").value,
+    product_name: document.getElementById("product_name").value,
+    category: document.getElementById("category").value,
+    materials: document.getElementById("materials").value,
+    features: document.getElementById("features").value,
+    audience: document.getElementById("audience").value,
+    tone: document.getElementById("tone").value,
+    price: document.getElementById("price").value,
+  };
+
+  try {
+    const res = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || "Something went wrong");
+
+    document.getElementById("r-title").textContent = data.result.title || "";
+    document.getElementById("r-description").textContent = data.result.description || "";
+    document.getElementById("r-pinterest").textContent = data.result.pinterest_description || "";
+    document.getElementById("r-instagram").textContent = data.result.instagram_caption || "";
+
+    const tagsEl = document.getElementById("r-tags");
+    tagsEl.innerHTML = "";
+    (data.result.tags || []).forEach(tag => {
+      const span = document.createElement("span");
+      span.textContent = tag;
+      tagsEl.appendChild(span);
+    });
+
+    resultEl.style.display = "block";
+  } catch (err) {
+    errorEl.textContent = err.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Generate listing";
+  }
+});
+
+document.getElementById("bulk-btn").addEventListener("click", async () => {
+  const fileInput = document.getElementById("csv-file");
+  const errorEl = document.getElementById("bulk-error");
+  const resultEl = document.getElementById("bulk-result");
+  errorEl.textContent = "";
+  resultEl.innerHTML = "";
+
+  if (!fileInput.files.length) {
+    errorEl.textContent = "Choose a CSV file first.";
+    return;
+  }
+
+  const btn = document.getElementById("bulk-btn");
+  btn.disabled = true;
+  btn.textContent = "Processing...";
+
+  const formData = new FormData();
+  formData.append("file", fileInput.files[0]);
+
+  try {
+    const res = await fetch("/api/bulk", { method: "POST", body: formData });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || "Bulk processing failed");
+    }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    resultEl.innerHTML = `<a class="download" href="${url}" download="listings_output.csv">Download generated listings (CSV)</a>`;
+  } catch (err) {
+    errorEl.textContent = err.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Process CSV";
+  }
+});
+</script>
+</body>
+</html>

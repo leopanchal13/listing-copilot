@@ -12,6 +12,8 @@
     --accent-light: #f1e3d3;
     --card: #ffffff;
     --border: #e8ddd0;
+    --green: #2f6b3a;
+    --green-light: #e7f1e8;
   }
   * { box-sizing: border-box; }
   body {
@@ -20,12 +22,22 @@
     background: var(--bg);
     color: var(--ink);
   }
-  header {
-    padding: 28px 24px 12px;
-    text-align: center;
-  }
+  header { padding: 28px 24px 8px; text-align: center; }
   header h1 { margin: 0 0 6px; font-size: 28px; }
-  header p { margin: 0; color: #6b6258; }
+  header p.tagline { margin: 0; color: #6b6258; font-size: 16px; }
+  .trust-bar {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    max-width: 880px;
+    margin: 16px auto 0;
+    padding: 0 24px;
+    font-size: 13px;
+    color: var(--green);
+    font-weight: 600;
+  }
+  .trust-bar span { white-space: nowrap; }
   main {
     max-width: 880px;
     margin: 0 auto;
@@ -39,6 +51,8 @@
     border-radius: 14px;
     padding: 24px;
   }
+  .card h2 { margin: 0 0 4px; font-size: 19px; }
+  .card .sub { margin: 0 0 16px; color: #6b6258; font-size: 14px; }
   .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
   .tab {
     padding: 8px 16px;
@@ -71,6 +85,11 @@
     cursor: pointer;
   }
   button:disabled { opacity: 0.6; cursor: wait; }
+  button.secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
   .result { margin-top: 20px; display: none; }
   .result h3 { margin: 18px 0 6px; font-size: 14px; text-transform: uppercase; color: var(--accent); letter-spacing: 0.04em; }
   .result pre, .result .box {
@@ -87,15 +106,126 @@
   .error { color: #b53d1d; font-size: 14px; margin-top: 12px; }
   .bulk-row { display: flex; align-items: center; gap: 12px; }
   a.download { color: var(--accent); font-weight: 600; }
+
+  /* Trial banner */
+  #trial-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: var(--green-light);
+    border: 1px solid #c6dfc9;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+  #trial-banner.locked { background: #fff7e6; border-color: #f0d9a6; }
+  #trial-banner a { color: var(--accent); font-weight: 600; cursor: pointer; }
+
+  /* Example before/after */
+  .example-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 600px) { .example-grid { grid-template-columns: 1fr; } }
+  .example-grid .col h4 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.03em; color: #8a8074; }
+  .example-grid .raw { font-size: 13px; color: #6b6258; background: #f6f3ee; border-radius: 8px; padding: 12px; }
+  .example-grid .polished .box { margin-bottom: 10px; }
+
+  /* Upgrade / paywall panel */
+  #upgrade-panel { display: none; margin-top: 16px; }
+  #upgrade-panel .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+  @media (max-width: 700px) { #upgrade-panel .plans { grid-template-columns: 1fr; } }
+  .plan {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .plan.featured { border-color: var(--accent); background: var(--accent-light); }
+  .plan .price { font-size: 22px; font-weight: 700; margin: 4px 0; }
+  .plan ul { text-align: left; font-size: 13px; padding-left: 18px; margin: 8px 0; color: #5a5147; }
+  .plan a.buy {
+    display: inline-block;
+    margin-top: 8px;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  /* Unlock modal */
+  #unlock-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(43,36,32,0.5);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 50;
+  }
+  #unlock-modal .box-inner {
+    background: white;
+    border-radius: 14px;
+    padding: 24px;
+    max-width: 380px;
+    width: 100%;
+  }
+  #unlock-modal .box-inner h3 { margin: 0 0 8px; }
+  #unlock-modal .box-inner p { font-size: 13px; color: #6b6258; margin-bottom: 14px; }
+  #unlock-modal .row { display: flex; gap: 8px; }
+  #unlock-close { background: transparent; color: #8a8074; margin-top: 10px; padding: 0; font-weight: 400; text-decoration: underline; font-size: 13px; }
+
+  footer { text-align: center; padding: 24px; font-size: 12px; color: #8a8074; }
+  footer a { color: var(--accent); }
 </style>
 </head>
 <body>
 <header>
   <h1>🛍️ Listing Copilot</h1>
-  <p>Turn product details into SEO-optimized, human-sounding listings — in seconds.</p>
+  <p class="tagline">One product → a ready-to-publish Etsy listing, a Pinterest pin, and an Instagram caption — written so it doesn't read like a robot wrote it.</p>
 </header>
+<div class="trust-bar">
+  <span>✓ 3 free listings, no card required</span>
+  <span>✓ Full refund within 7 days, no questions</span>
+  <span>✓ Built &amp; personally reviewed by one indie maker, not a faceless company</span>
+</div>
 
 <main>
+
+  <!-- TRIAL STATUS BANNER -->
+  <div id="trial-banner">
+    <span id="trial-banner-text">Checking your free trial…</span>
+    <a id="unlock-link">Already paid? Unlock full access →</a>
+  </div>
+
+  <!-- SEE IT WORK FIRST (static, no API cost, builds trust before they spend their free tries) -->
+  <div class="card">
+    <h2>See it work, before you try it yourself</h2>
+    <p class="sub">A real input → real output. This is exactly what the tool below produces — no cherry-picking.</p>
+    <div class="example-grid">
+      <div class="col">
+        <h4>What a seller types in</h4>
+        <div class="raw">
+          Product: Hand-poured lavender soy candle<br/>
+          Materials: soy wax, cotton wick, lavender essential oil, amber glass jar<br/>
+          Features: 45-hour burn time, hand-poured in small batches, reusable jar<br/>
+          Audience: gift shoppers, self-care enthusiasts<br/>
+          Tone: warm, cozy, a little whimsical
+        </div>
+      </div>
+      <div class="col polished">
+        <h4>What comes back</h4>
+        <div class="box"><strong>Lavender Soy Candle in Amber Jar | Hand-Poured Self Care Gift, 45hr Burn</strong></div>
+        <div class="box" style="font-size:12px;">lavender candle, soy candle gift, self care gift, cozy home decor, handmade candle, relaxing gift idea, amber jar candle, calming candle, gift for her, natural soy wax, aromatherapy candle, spa gift, housewarming gift</div>
+        <div class="box" style="font-size:12px;">+ a matching Pinterest pin description and Instagram caption, generated from the same input.</div>
+      </div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="tabs">
       <div class="tab active" data-tab="single">Single listing</div>
@@ -156,13 +286,145 @@
         <input type="file" id="csv-file" accept=".csv" />
         <button id="bulk-btn" style="margin-top:0;">Process CSV</button>
       </div>
+      <p class="hint">On the free trial, the first few rows process as a preview so you can see the quality on your own catalog before unlocking the rest.</p>
       <div class="error" id="bulk-error"></div>
       <div id="bulk-result" style="margin-top:16px;"></div>
+    </div>
+
+    <!-- UPGRADE PANEL (shown when free trial is exhausted) -->
+    <div id="upgrade-panel" class="card" style="margin-top:16px; border-color: var(--accent);">
+      <h2>You've used today's free listings</h2>
+      <p class="sub">Pick a plan to keep going — instant access, no waiting on an email.</p>
+      <div class="plans">
+        <div class="plan">
+          <div>Starter</div>
+          <div class="price">$9<span style="font-size:13px;font-weight:400;">/mo</span></div>
+          <ul>
+            <li>30 listings/mo</li>
+            <li>Etsy formatting</li>
+          </ul>
+          <a class="buy" href="https://buy.stripe.com/9B6fZi1e3beUd7490b7Vm02" target="_blank" rel="noopener">Choose Starter</a>
+        </div>
+        <div class="plan featured">
+          <div>Growth</div>
+          <div class="price">$19<span style="font-size:13px;font-weight:400;">/mo</span></div>
+          <ul>
+            <li>100 listings/mo</li>
+            <li>Etsy + Pinterest + Instagram</li>
+            <li>Bulk CSV upload</li>
+          </ul>
+          <a class="buy" href="https://buy.stripe.com/3cIaEY3mb96M1om7W77Vm01" target="_blank" rel="noopener">Choose Growth</a>
+        </div>
+        <div class="plan">
+          <div>Pro</div>
+          <div class="price">$39<span style="font-size:13px;font-weight:400;">/mo</span></div>
+          <ul>
+            <li>300 listings/mo</li>
+            <li>Etsy + Shopify + Amazon</li>
+            <li>Priority support</li>
+          </ul>
+          <a class="buy" href="https://buy.stripe.com/6oU7sMcWL96M4Ayfoz7Vm00" target="_blank" rel="noopener">Choose Pro</a>
+        </div>
+      </div>
+      <p class="hint" style="margin-top:14px;">Not happy after your first batch? Full refund within 7 days — just reply to your Stripe receipt email. Already paid? <a id="unlock-link-2" style="color:var(--accent);cursor:pointer;font-weight:600;">Unlock instantly →</a></p>
     </div>
   </div>
 </main>
 
+<!-- UNLOCK MODAL -->
+<div id="unlock-modal">
+  <div class="box-inner">
+    <h3>Unlock full access</h3>
+    <p>Enter the email you paid with — we check Stripe directly, so access unlocks immediately, no waiting.</p>
+    <div class="row">
+      <input id="unlock-email" type="email" placeholder="you@example.com" />
+      <button id="unlock-submit" style="margin-top:0; white-space:nowrap;">Unlock</button>
+    </div>
+    <div class="error" id="unlock-error"></div>
+    <button id="unlock-close">Cancel</button>
+  </div>
+</div>
+
+<footer>
+  Questions, feedback, or a refund request? Reply to your Stripe receipt email and it reaches the founder directly — no support ticket queue.
+</footer>
+
 <script>
+let trialState = { unlocked: false, remaining: 3, limit: 3 };
+
+function renderTrialBanner() {
+  const banner = document.getElementById("trial-banner");
+  const text = document.getElementById("trial-banner-text");
+  if (trialState.unlocked) {
+    banner.classList.remove("locked");
+    text.textContent = "✓ Full access unlocked — unlimited listings.";
+    document.getElementById("unlock-link").style.display = "none";
+  } else {
+    document.getElementById("unlock-link").style.display = "inline";
+    if (trialState.remaining > 0) {
+      banner.classList.remove("locked");
+      text.textContent = `You have ${trialState.remaining} of ${trialState.limit} free listings left today — no card required.`;
+    } else {
+      banner.classList.add("locked");
+      text.textContent = "You've used today's free listings.";
+    }
+  }
+}
+
+async function refreshTrialStatus() {
+  try {
+    const res = await fetch("/api/trial-status");
+    const data = await res.json();
+    trialState = data.unlocked
+      ? { unlocked: true }
+      : { unlocked: false, remaining: data.remaining, limit: data.limit };
+    renderTrialBanner();
+  } catch (e) { /* non-fatal */ }
+}
+refreshTrialStatus();
+
+function showUpgradePanel(show) {
+  document.getElementById("upgrade-panel").style.display = show ? "block" : "none";
+}
+
+function openUnlockModal() {
+  document.getElementById("unlock-modal").style.display = "flex";
+  document.getElementById("unlock-error").textContent = "";
+}
+function closeUnlockModal() {
+  document.getElementById("unlock-modal").style.display = "none";
+}
+document.getElementById("unlock-link").addEventListener("click", openUnlockModal);
+document.getElementById("unlock-link-2").addEventListener("click", openUnlockModal);
+document.getElementById("unlock-close").addEventListener("click", closeUnlockModal);
+
+document.getElementById("unlock-submit").addEventListener("click", async () => {
+  const email = document.getElementById("unlock-email").value.trim();
+  const errorEl = document.getElementById("unlock-error");
+  errorEl.textContent = "";
+  if (!email) { errorEl.textContent = "Enter an email address."; return; }
+  const btn = document.getElementById("unlock-submit");
+  btn.disabled = true;
+  btn.textContent = "Checking…";
+  try {
+    const res = await fetch("/api/unlock", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || "Couldn't unlock with that email.");
+    closeUnlockModal();
+    showUpgradePanel(false);
+    await refreshTrialStatus();
+  } catch (err) {
+    errorEl.textContent = err.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Unlock";
+  }
+});
+
 document.querySelectorAll(".tab").forEach(tab => {
   tab.addEventListener("click", () => {
     document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
@@ -200,8 +462,15 @@ document.getElementById("generate-btn").addEventListener("click", async () => {
       body: JSON.stringify(payload),
     });
     const data = await res.json();
+
+    if (res.status === 402) {
+      showUpgradePanel(true);
+      await refreshTrialStatus();
+      throw new Error(data.message || "Free trial used up for today.");
+    }
     if (!data.ok) throw new Error(data.error || "Something went wrong");
 
+    showUpgradePanel(false);
     document.getElementById("r-title").textContent = data.result.title || "";
     document.getElementById("r-description").textContent = data.result.description || "";
     document.getElementById("r-pinterest").textContent = data.result.pinterest_description || "";
@@ -216,6 +485,10 @@ document.getElementById("generate-btn").addEventListener("click", async () => {
     });
 
     resultEl.style.display = "block";
+    if (!data.unlocked && typeof data.trial_remaining === "number") {
+      trialState = { unlocked: false, remaining: data.trial_remaining, limit: trialState.limit || 3 };
+      renderTrialBanner();
+    }
   } catch (err) {
     errorEl.textContent = err.message;
   } finally {
@@ -249,9 +522,17 @@ document.getElementById("bulk-btn").addEventListener("click", async () => {
       const data = await res.json().catch(() => ({}));
       throw new Error(data.error || "Bulk processing failed");
     }
+    const errCount = res.headers.get("X-Generation-Errors");
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
-    resultEl.innerHTML = `<a class="download" href="${url}" download="listings_output.csv">Download generated listings (CSV)</a>`;
+    let note = "";
+    if (errCount && Number(errCount) > 0) {
+      note = `<p class="hint">${errCount} row(s) need full access to process — <a id="bulk-unlock-link" style="color:var(--accent);cursor:pointer;font-weight:600;">unlock instantly</a> to process your whole catalog.</p>`;
+    }
+    resultEl.innerHTML = `<a class="download" href="${url}" download="listings_output.csv">Download generated listings (CSV)</a>${note}`;
+    const unlockLink = document.getElementById("bulk-unlock-link");
+    if (unlockLink) unlockLink.addEventListener("click", openUnlockModal);
+    await refreshTrialStatus();
   } catch (err) {
     errorEl.textContent = err.message;
   } finally {

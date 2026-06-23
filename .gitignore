@@ -3,3 +3,6 @@ __pycache__/
 .env
 venv/
 .DS_Store
+trial_usage.json
+test_trial_usage.json
+static/_jsdom_test.js

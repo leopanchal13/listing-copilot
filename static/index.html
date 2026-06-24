@@ -4,22 +4,23 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Listing Copilot: AI-written listings for handmade sellers</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230B3B2E'/%3E%3Cpath d='M24 62 L50 42 L76 62' stroke='%233FC894' stroke-width='11' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a130f;
-    --bg-elev: #111e16;
-    --bg-elev-2: #16261b;
-    --border: rgba(255,255,255,0.08);
-    --border-strong: rgba(255,255,255,0.16);
-    --ink: #f3f6f3;
-    --ink-dim: #a9b8ad;
-    --ink-faint: #7c8c80;
-    --accent: #35c980;
-    --accent-dim: rgba(53,201,128,0.12);
-    --accent-ink: #07150d;
+    --bg: #0E1A15;
+    --bg-elev: #0B3B2E;
+    --bg-elev-2: #0F5C44;
+    --border: rgba(239,241,239,0.10);
+    --border-strong: rgba(239,241,239,0.20);
+    --ink: #EFF1EF;
+    --ink-dim: rgba(239,241,239,0.68);
+    --ink-faint: rgba(239,241,239,0.46);
+    --accent: #3FC894;
+    --accent-dim: rgba(63,200,148,0.14);
+    --accent-ink: #0E1A15;
     --warn-border: rgba(214,168,98,0.35);
     --warn-bg: rgba(214,168,98,0.08);
     --danger: #e2796a;
@@ -27,17 +28,17 @@
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background: var(--bg);
     color: var(--ink);
     -webkit-font-smoothing: antialiased;
   }
   header { max-width: 720px; margin: 0 auto; padding: 64px 24px 0; text-align: center; }
-  .logo { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 28px; }
-  .logo .mark { width: 18px; height: 18px; border-radius: 5px; background: var(--accent); }
-  .logo span { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: var(--ink-dim); }
-  header h1 { margin: 0 0 14px; font-size: 34px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; }
-  header p.tagline { margin: 0 auto; max-width: 540px; color: var(--ink-dim); font-size: 16px; line-height: 1.6; }
+  .logo { display: inline-flex; align-items: center; gap: 11px; margin-bottom: 32px; }
+  .logo svg { display: block; flex: none; }
+  .logo span { font-family: "Manrope", sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 0.01em; color: var(--ink); }
+  header h1 { margin: 0 0 16px; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 40px; letter-spacing: -0.01em; line-height: 1.2; }
+  header p.tagline { margin: 0 auto; max-width: 540px; color: var(--ink-dim); font-family: "Cormorant Garamond", Georgia, serif; font-style: italic; font-size: 19px; line-height: 1.6; }
 
   .trust-bar {
     display: flex;
@@ -221,7 +222,13 @@
 </head>
 <body>
 <header>
-  <div class="logo"><span class="mark"></span><span>LISTING COPILOT</span></div>
+  <div class="logo">
+    <svg width="30" height="30" viewBox="0 0 100 100" fill="none">
+      <path d="M20 70 L50 46 L80 70" stroke="#3FC894" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M20 52 L50 28 L80 52" stroke="#EFF1EF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+    <span>Listing Copilot</span>
+  </div>
   <h1>Listing copy that sounds like you wrote it</h1>
   <p class="tagline">One product becomes a ready-to-publish Etsy listing, a Pinterest pin, and an Instagram caption, written in your voice, not a robot's.</p>
 </header>
